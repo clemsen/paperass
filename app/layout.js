@@ -1,20 +1,21 @@
-import { Montserrat } from 'next/font/google'
-import './globals.css'
-import MainComponent from "@/components/MainComponent"
+import { Montserrat } from "next/font/google";
+import "./globals.css";
+import MainComponent from "@/components/MainComponent";
 
-const montserrat = Montserrat({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'myAssistant',
-  description: 'Create your own GPT Assistant powered by OpenAI',
-}
+  title: "Paperass AI",
+  description: "Votre assistant administratif",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      {console.log("layout.js")}
       <body className={`${montserrat.className}`}>
-        <MainComponent children={children}/>
+        <MainComponent children={children} />
       </body>
     </html>
-  )
+  );
 }

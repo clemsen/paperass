@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Embed from "./embed/[assistantId]/page";
+import Embed from "./embed/page";
 import { useContext } from "react";
 import { KeyContext } from "../components/MainComponent";
 
@@ -9,9 +9,16 @@ function Home() {
   const getKey = useContext(KeyContext);
   const [keyAdded, setKeyAdded] = useState(false);
   const [assistants, setAssistants] = useState([]);
+  const [test, setTest] = useState("");
   const fetchData = async () => {
-    const response = await fetch("/api");
-    const data = await response.json();
+    let data = undefined;
+    try {
+      const response = await fetch("/api");
+      data = await response.json();
+    } catch (error) {
+      console.error("Error in getting data", error);
+    }
+    setTest(data);
     if (data.openAIKey != undefined && data.openAIKey != "") {
       getKey.setKey(data.openAIKey);
       setKeyAdded(true);
@@ -31,7 +38,7 @@ function Home() {
     fetchData();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex flex-col h-screen">
       <div
         id="header"
         className="flex items-center justify-between flex-wrap gap-2 bg-slate-900 text-white px-2 md:px-8 py-4  "
@@ -41,11 +48,9 @@ function Home() {
           <h6 className="  text-3xl font-semibold">Paperass AI</h6>
         </div>
       </div>
-      {(getKey.key != undefined || getKey.key != "") && (
-        <div id="chat" className="flex flex-grow">
-          {assistants.length > 0 && (
-            <Embed assistantId={assistants[0].id} Okey={getKey.key} />
-          )}
+      {getKey.key && getKey.key !== "" && assistants.length > 0 && (
+        <div id="chat" className="flex flex-1">
+          <Embed assistantId={assistants[0].id} Okey={getKey.key} />
         </div>
       )}
     </main>

@@ -12,11 +12,6 @@ function Embed({ assistantId, Okey }) {
   const chatRef = useRef(null);
   chatRef.current = chat;
 
-  const refreshChat = () => {
-    setChat((prev) => []);
-    setThread((prev) => null);
-  };
-
   const getAnswer = async (threadId, runId) => {
     const getRun = await openai.beta.threads.runs.retrieve(threadId, runId);
 
@@ -60,8 +55,8 @@ function Embed({ assistantId, Okey }) {
   }, []);
 
   return (
-    <div className="h-screen w-screen md:p-4 flex flex-col bg-myBg gap-4">
-      <div className="flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
+    <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
+      <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
             key={index}
