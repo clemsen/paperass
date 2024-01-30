@@ -8,6 +8,7 @@ import { KeyContext } from "../components/MainComponent";
 function Home() {
   const getKey = useContext(KeyContext);
   const [assistant, setAssistant] = useState();
+  const [logged, setLogged] = useState(false);
   const fetchData = async () => {
     let data = undefined;
     try {
@@ -37,6 +38,16 @@ function Home() {
           <Image src="/assistant.svg" height={50} width={50} alt="logo" />
           <h6 className="  text-3xl font-semibold">Paperass AI</h6>
         </div>
+        {logged ? (
+          <div>bla</div>
+        ) : (
+          <div className="flex gap-5" id="login-buttons">
+            <button className="bg-mySecondary rounded-lg p-2.5 text-slate-900">
+              S'inscrire
+            </button>
+            <button>Se Connecter</button>
+          </div>
+        )}
       </div>
       {getKey.key && getKey.key !== "" && assistant !== undefined && (
         <div id="chat" className="flex flex-1">
