@@ -9,7 +9,6 @@ function Home() {
   const getKey = useContext(KeyContext);
   const [keyAdded, setKeyAdded] = useState(false);
   const [assistants, setAssistants] = useState([]);
-  const [test, setTest] = useState("");
   const fetchData = async () => {
     let data = undefined;
     try {
@@ -18,9 +17,10 @@ function Home() {
     } catch (error) {
       console.error("Error in getting data", error);
     }
-    setTest(data);
-    if (data.openAIKey != undefined && data.openAIKey != "") {
-      getKey.setKey(data.openAIKey);
+    const openAIKey = await process.env.NEXT_PUBLIC_OPENAI_KEY;
+    console.log("openAIKey = ", openAIKey);
+    if (openAIKey != undefined && openAIKey != "") {
+      getKey.setKey(openAIKey);
       setKeyAdded(true);
     }
     if (
