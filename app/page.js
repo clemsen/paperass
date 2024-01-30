@@ -4,6 +4,7 @@ import Image from "next/image";
 import Embed from "../components/ChatComponent";
 import { useContext } from "react";
 import { KeyContext } from "../components/MainComponent";
+import Link from "next/link";
 
 function Home() {
   const getKey = useContext(KeyContext);
@@ -42,9 +43,12 @@ function Home() {
           <div>bla</div>
         ) : (
           <div className="flex gap-5" id="login-buttons">
-            <button className="bg-mySecondary rounded-lg p-2.5 text-slate-900">
+            <Link
+              href="/signup"
+              className="bg-mySecondary rounded-lg p-2.5 text-slate-900"
+            >
               S'inscrire
-            </button>
+            </Link>
             <button>Se Connecter</button>
           </div>
         )}
