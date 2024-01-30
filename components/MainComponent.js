@@ -32,7 +32,7 @@ function MainComponent({ children }) {
                 href="/signup"
                 className="bg-mySecondary rounded-lg p-2.5 text-slate-900"
               >
-                S'inscrire
+                S&apos;inscrire
               </Link>
               <button>Se Connecter</button>
             </div>
