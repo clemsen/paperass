@@ -9,7 +9,7 @@ export const metadata = {
   description: "Votre assistant administratif",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.className}`}>

@@ -6,14 +6,13 @@ import { createClient } from "@supabase/supabase-js";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const submitForm = async () => {
     const supabase = await createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_KEY
     );
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    await setEmail("");
-    await setPassword("");
+    await supabase.auth.signUp({ email, password });
   };
   return (
     <div id="signup" className="flex flex-col w-screen items-center">
