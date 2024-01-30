@@ -1,13 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Embed from "./embed/page";
+import Embed from "../components/ChatComponent";
 import { useContext } from "react";
 import { KeyContext } from "../components/MainComponent";
 
 function Home() {
   const getKey = useContext(KeyContext);
-  const [keyAdded, setKeyAdded] = useState(false);
   const [assistant, setAssistant] = useState();
   const fetchData = async () => {
     let data = undefined;
@@ -20,7 +19,6 @@ function Home() {
     const openAIKey = await process.env.NEXT_PUBLIC_OPENAI_KEY;
     if (openAIKey != undefined && openAIKey != "") {
       getKey.setKey(openAIKey);
-      setKeyAdded(true);
     }
     if (data.assistant != undefined) {
       setAssistant(data.assistant.id);
