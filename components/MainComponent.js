@@ -34,7 +34,9 @@ function MainComponent({ children }) {
               >
                 S&apos;inscrire
               </Link>
-              <button>Se Connecter</button>
+              <Link className="p-2.5" href="/signin">
+                Se Connecter
+              </Link>
             </div>
           )}
         </div>

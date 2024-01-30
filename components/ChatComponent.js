@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import OpenAI from "openai";
 
-function Embed({ assistantId, Okey }) {
+function ChatComponent({ assistantId, Okey }) {
   const [question, setQuestion] = useState("");
   const [chat, setChat] = useState([]);
   const [thread, setThread] = useState(null);
@@ -85,7 +85,7 @@ function Embed({ assistantId, Okey }) {
         <input
           id="question"
           className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          placeholder="Ask a question"
+          placeholder="Pose une question"
           required
           value={question}
           onKeyDown={(e) => {
@@ -104,4 +104,4 @@ function Embed({ assistantId, Okey }) {
   );
 }
 
-export default Embed;
+export default ChatComponent;

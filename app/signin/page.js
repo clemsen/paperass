@@ -2,8 +2,9 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { redirect } from "next/navigation";
 
-const Signup = () => {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const submitForm = async () => {
@@ -11,14 +12,21 @@ const Signup = () => {
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_KEY
     );
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    await setEmail("");
-    await setPassword("");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      console.log("Erreur d'authentification");
+    } else {
+      console.log("Vous êtes authentifié");
+      // redirect("/");
+    }
   };
   return (
     <div id="signup" className="flex flex-col w-screen items-center">
       <div className="bloc-signup flex flex-col w-1/2 items-center">
-        <div className="title mt-10 text-xl">Inscrivez vous</div>
+        <div className="title mt-10 text-xl">Connectez vous</div>
         <div className="form mt-10 w-full">
           <div>Adresse Email</div>
           <TextField
@@ -42,7 +50,7 @@ const Signup = () => {
             variant="outlined"
             onClick={submitForm}
           >
-            Inscrivez vous
+            Connectez vous
           </button>
         </div>
       </div>
@@ -50,4 +58,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;

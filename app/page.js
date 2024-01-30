@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Embed from "../components/ChatComponent";
+import ChatComponent from "../components/ChatComponent";
 import { useContext } from "react";
 import { KeyContext } from "../components/MainComponent";
 
@@ -29,7 +29,7 @@ function Home() {
   return (
     <div id="chat" className="flex flex-1">
       {getKey.key && getKey.key !== "" && assistant !== undefined && (
-        <Embed assistantId={assistant} Okey={getKey.key} />
+        <ChatComponent assistantId={assistant} Okey={getKey.key} />
       )}
     </div>
   );
