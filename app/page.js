@@ -8,7 +8,7 @@ import { KeyContext } from "../components/MainComponent";
 function Home() {
   const getKey = useContext(KeyContext);
   const [keyAdded, setKeyAdded] = useState(false);
-  const [assistants, setAssistants] = useState([]);
+  const [assistant, setAssistant] = useState();
   const fetchData = async () => {
     let data = undefined;
     try {
@@ -18,20 +18,12 @@ function Home() {
       console.error("Error in getting data", error);
     }
     const openAIKey = await process.env.NEXT_PUBLIC_OPENAI_KEY;
-    console.log("openAIKey = ", openAIKey);
     if (openAIKey != undefined && openAIKey != "") {
       getKey.setKey(openAIKey);
       setKeyAdded(true);
     }
-    if (
-      data.assistants != undefined &&
-      Object.keys(data.assistants).length > 0
-    ) {
-      let getAssistants = [];
-      Object.keys(data.assistants).forEach((key) =>
-        getAssistants.push(data.assistants[key])
-      );
-      setAssistants(getAssistants);
+    if (data.assistant != undefined) {
+      setAssistant(data.assistant.id);
     }
   };
   useEffect(() => {
@@ -48,9 +40,9 @@ function Home() {
           <h6 className="  text-3xl font-semibold">Paperass AI</h6>
         </div>
       </div>
-      {getKey.key && getKey.key !== "" && assistants.length > 0 && (
+      {getKey.key && getKey.key !== "" && assistant !== undefined && (
         <div id="chat" className="flex flex-1">
-          <Embed assistantId={assistants[0].id} Okey={getKey.key} />
+          <Embed assistantId={assistant} Okey={getKey.key} />
         </div>
       )}
     </main>
