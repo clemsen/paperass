@@ -1,10 +1,13 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useState } from "react";
 
 function HeaderComponent({ children }) {
   const { data: session, status } = useSession();
+  const [userBloc, setUserBloc] = useState(false);
 
   return (
     <div
@@ -16,7 +19,24 @@ function HeaderComponent({ children }) {
         <h6 className="  text-3xl font-semibold">Paperass AI</h6>
       </Link>
       {status == "authenticated" ? (
-        <div>Authentifié</div>
+        <div>
+          <button
+            className="bg-mySecondary rounded-lg p-2.5 text-slate-900 flex gap-2"
+            onClick={() => setUserBloc(!userBloc)}
+          >
+            <div>{session.user?.email}</div>
+            <KeyboardArrowDownIcon />
+          </button>
+          {userBloc && (
+            <button
+              id="userBloc"
+              className="bg-white text-black"
+              onClick={signOut}
+            >
+              Déconnexion
+            </button>
+          )}
+        </div>
       ) : (
         <div className="flex gap-5" id="login-buttons">
           <Link
