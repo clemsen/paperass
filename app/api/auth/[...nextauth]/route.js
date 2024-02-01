@@ -14,7 +14,7 @@ const handler = NextAuth({
         const res = await supabase.auth.signInWithPassword(credentials);
         const user = await res.data.user;
         if (user && user.aud == "authenticated") {
-          return user;
+          return { ...user, access_token: res.data.session.access_token };
         }
         return null;
       },
@@ -29,11 +29,13 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.user_id = user.id;
+        token.access_token = user.access_token;
       }
       return token;
     },
     async session({ session, token }) {
       session.user_id = token.user_id;
+      session.access_token = token.access_token;
       return session;
     },
   },

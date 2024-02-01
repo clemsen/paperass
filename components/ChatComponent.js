@@ -60,7 +60,12 @@ function ChatComponent({ assistantId, Okey }) {
   const sendFirstName = async () => {
     const supabase = await createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_KEY
+      process.env.NEXT_PUBLIC_SUPABASE_KEY,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`, // Utilisez le jeton stocké dans la session NextAuth
+        },
+      }
     );
     const { error } = await supabase
       .from("user_info")
