@@ -2,8 +2,10 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Signin = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const submitForm = async () => {
@@ -16,6 +18,7 @@ const Signin = () => {
       console.log("Erreur d'authentification");
     } else {
       console.log("Vous êtes authentifié");
+      router.push("/");
     }
   };
   return (

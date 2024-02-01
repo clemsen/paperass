@@ -19,7 +19,7 @@ function HeaderComponent({ children }) {
         <h6 className="  text-3xl font-semibold">Paperass AI</h6>
       </Link>
       {status == "authenticated" ? (
-        <div>
+        <div className="relative">
           <button
             className="bg-mySecondary rounded-lg p-2.5 text-slate-900 flex gap-2"
             onClick={() => setUserBloc(!userBloc)}
@@ -30,7 +30,7 @@ function HeaderComponent({ children }) {
           {userBloc && (
             <button
               id="userBloc"
-              className="bg-white text-black"
+              className="bg-myPrimary rounded-lg p-2.5 text-slate-900 absolute right-0"
               onClick={signOut}
             >
               Déconnexion
