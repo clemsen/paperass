@@ -6,7 +6,7 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "credentials",
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const supabase = await createClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL,
           process.env.NEXT_PUBLIC_SUPABASE_KEY
@@ -24,6 +24,7 @@ const handler = NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };

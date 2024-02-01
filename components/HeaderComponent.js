@@ -15,7 +15,6 @@ function HeaderComponent({ children }) {
         <Image src="/assistant.svg" height={50} width={50} alt="logo" />
         <h6 className="  text-3xl font-semibold">Paperass AI</h6>
       </Link>
-      {console.log(status)}
       {status == "authenticated" ? (
         <div>Authentifié</div>
       ) : (
