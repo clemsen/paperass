@@ -52,7 +52,7 @@ function ChatComponent({ assistantId, Okey }) {
     if (Okey != "") {
       setOpenai(new OpenAI({ apiKey: Okey, dangerouslyAllowBrowser: true }));
     }
-  }, []);
+  }, [Okey]);
 
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">

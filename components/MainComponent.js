@@ -11,7 +11,6 @@ export const KeyContext = createContext(keyDefault);
 
 function MainComponent({ children }) {
   const [key, setKey] = useState("");
-  // const { data: session, status } = useSession();
 
   return (
     <KeyContext.Provider value={{ key, setKey }}>

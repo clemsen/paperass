@@ -7,7 +7,6 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "credentials",
       async authorize(credentials, req) {
-        console.log("hello");
         const supabase = await createClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL,
           process.env.NEXT_PUBLIC_SUPABASE_KEY

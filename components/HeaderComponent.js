@@ -11,10 +11,10 @@ function HeaderComponent({ children }) {
       id="header"
       className="flex items-center justify-between flex-wrap gap-2 bg-slate-900 text-white px-2 md:px-8 py-4  "
     >
-      <div className="flex items-center gap-2">
+      <Link className="flex items-center gap-2" href="/">
         <Image src="/assistant.svg" height={50} width={50} alt="logo" />
         <h6 className="  text-3xl font-semibold">Paperass AI</h6>
-      </div>
+      </Link>
       {console.log(status)}
       {status == "authenticated" ? (
         <div>Authentifié</div>
