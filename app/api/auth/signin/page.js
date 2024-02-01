@@ -1,24 +1,14 @@
 "use client";
 import { TextField } from "@mui/material";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-//import { signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
-  const { data: session, status } = useSession();
-
-  console.log({ session, status });
   const submitForm = async () => {
-    const supabase = await createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_KEY
-    );
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await signIn("credentials", {
+      redirect: false,
       email,
       password,
     });
@@ -26,8 +16,6 @@ const Signin = () => {
       console.log("Erreur d'authentification");
     } else {
       console.log("Vous êtes authentifié");
-      //signIn();
-      router.push("/");
     }
   };
   return (
