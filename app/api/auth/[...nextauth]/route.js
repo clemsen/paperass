@@ -19,12 +19,24 @@ const handler = NextAuth({
         return null;
       },
       credentials: {
-        email: { label: "Email", type: "text " },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
     }),
   ],
   secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user_id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user_id = token.user_id;
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

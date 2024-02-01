@@ -2,8 +2,11 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import OpenAI from "openai";
+import { createClient } from "@supabase/supabase-js";
+import { useSession } from "next-auth/react";
 
 function ChatComponent({ assistantId, Okey }) {
+  const { data: session, status } = useSession();
   const [question, setQuestion] = useState("");
   const [chat, setChat] = useState([]);
   const [thread, setThread] = useState(null);
@@ -54,8 +57,21 @@ function ChatComponent({ assistantId, Okey }) {
     }
   }, [Okey]);
 
+  const sendFirstName = async () => {
+    const supabase = await createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_KEY
+    );
+    const { error } = await supabase
+      .from("user_info")
+      .insert({ first_name: "Clément", user_id: session.user_id });
+  };
+
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
+      <button className="absolute" onClick={sendFirstName}>
+        Send Clément
+      </button>
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
