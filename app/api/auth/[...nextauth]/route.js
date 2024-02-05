@@ -39,6 +39,10 @@ const handler = NextAuth({
       return session;
     },
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60 * 4, // 4 hours
+  },
 });
 
 export { handler as GET, handler as POST };

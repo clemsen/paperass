@@ -17,7 +17,6 @@ const Signin = () => {
     if (error) {
       console.log("Erreur d'authentification");
     } else {
-      console.log("Vous êtes authentifié");
       router.push("/");
     }
   };

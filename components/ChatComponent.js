@@ -62,8 +62,8 @@ function ChatComponent({ assistantId, Okey }) {
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_KEY,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`, // Utilisez le jeton stocké dans la session NextAuth
+        global: {
+          headers: { Authorization: `Bearer ${session?.access_token}` },
         },
       }
     );
@@ -74,9 +74,6 @@ function ChatComponent({ assistantId, Okey }) {
 
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
-      <button className="absolute" onClick={sendFirstName}>
-        Send Clément
-      </button>
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div

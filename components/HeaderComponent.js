@@ -36,7 +36,6 @@ function HeaderComponent({ children }) {
               Déconnexion
             </button>
           )}
-          <div>{JSON.stringify(session)}</div>
         </div>
       ) : (
         <div className="flex gap-5" id="login-buttons">
