@@ -8,13 +8,7 @@ import { useSession } from "next-auth/react";
 function ChatComponent({ assistantId, Okey }) {
   const { data: session, status } = useSession();
   const [question, setQuestion] = useState("");
-  const [chat, setChat] = useState([
-    {
-      isBot: true,
-      msg: "Bonjour, je suis Paperass AI, je suis là pour t'assister dans toutes tes démarches administratives. \
-    Comment puis-je t'aider ?",
-    },
-  ]);
+  const [chat, setChat] = useState([]);
   const [thread, setThread] = useState(null);
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,7 +25,6 @@ function ChatComponent({ assistantId, Okey }) {
         },
       }
     );
-    console.log("session =", session);
     let supabase_rep;
     if (session?.user_id) {
       supabase_rep = await supabase.from("message").upsert({
@@ -45,7 +38,6 @@ function ChatComponent({ assistantId, Okey }) {
       console.log("user_id doesn't exist in session");
       supabase_rep = null;
     }
-    console.log("supabase_rep = ", supabase_rep);
   };
 
   const getAnswer = async (threadId, runId) => {
@@ -62,12 +54,18 @@ function ChatComponent({ assistantId, Okey }) {
       setTimeout(() => getAnswer(threadId, runId), 200);
     }
   };
-  const askAssistant = async () => {
-    let getQuestion = question;
+  const askAssistant = async (questionInput = "", isAutomatic = false) => {
+    if (!openai) {
+      console.log("OpenAI client n'est pas encore initialisé.");
+      return;
+    }
+    let getQuestion = questionInput || question;
     setQuestion("");
-    let chatList = [...chatRef.current, { isBot: false, msg: getQuestion }];
+    if (!isAutomatic) {
+      let chatList = [...chatRef.current, { isBot: false, msg: getQuestion }];
+      setChat(chatList);
+    }
     setLoading((prev) => true);
-    setChat(chatList);
     let getThread;
     if (thread == null) {
       getThread = await openai.beta.threads.create();
@@ -84,32 +82,34 @@ function ChatComponent({ assistantId, Okey }) {
     });
     getAnswer(getThread.id, getRun.id);
   };
+
   useEffect(() => {
     if (Okey != "") {
-      setOpenai(new OpenAI({ apiKey: Okey, dangerouslyAllowBrowser: true }));
+      const openaiInstance = new OpenAI({
+        apiKey: Okey,
+        dangerouslyAllowBrowser: true,
+      });
+      setOpenai(openaiInstance);
     }
   }, [Okey]);
+
+  useEffect(() => {
+    if (openai && Okey) {
+      askAssistant(
+        "Bonjour présente toi, rappelle bien que tu es là pour expliquer l'ensemble des prestations sociales auxquelles j'ai droit \
+        et dis moi en quoi tu peux m'aider à connaitre toutes les prestations sociales auxquelles j'ai droit.",
+        true
+      );
+    }
+  }, [openai, Okey]);
+
   useEffect(() => {
     postMessage(chat);
   }, [chat]);
 
-  const sendFirstName = async () => {
-    const supabase = await createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_KEY,
-      {
-        global: {
-          headers: { Authorization: `Bearer ${session?.access_token}` },
-        },
-      }
-    );
-    const { error } = await supabase
-      .from("user_info")
-      .insert({ first_name: "Clément", user_id: session.user_id });
-  };
-
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
+      {question}
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
@@ -118,7 +118,7 @@ function ChatComponent({ assistantId, Okey }) {
               msg.isBot
                 ? "bg-gray-900 text-gray-100 self-start"
                 : "text-gray-900 bg-gray-100 self-end border-2"
-            } rounded-lg  px-3 py-2 max-w-sm`}
+            } rounded-lg  px-3 py-2 max-w-2xl`}
           >
             {msg.msg}
           </div>
