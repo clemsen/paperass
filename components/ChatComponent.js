@@ -35,9 +35,11 @@ function ChatComponent({ assistantId, Okey }) {
     let supabase_rep;
     if (session?.user_id) {
       supabase_rep = await supabase.from("message").upsert({
+        session_id: session.access_token.substr(
+          session.access_token.length - 10
+        ),
         message: message,
         user_id: session.user_id,
-        session_id: session.id,
       });
     } else {
       console.log("user_id doesn't exist in session");
@@ -108,7 +110,6 @@ function ChatComponent({ assistantId, Okey }) {
 
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
-      <button onClick={sendFirstName}>Send Clément</button>
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
