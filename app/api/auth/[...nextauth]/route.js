@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
+import { v4 } from "uuid";
 
 const handler = NextAuth({
   providers: [
@@ -36,6 +37,7 @@ const handler = NextAuth({
     async session({ session, token }) {
       session.user_id = token.user_id;
       session.access_token = token.access_token;
+      session.id = v4();
       return session;
     },
   },

@@ -8,12 +8,43 @@ import { useSession } from "next-auth/react";
 function ChatComponent({ assistantId, Okey }) {
   const { data: session, status } = useSession();
   const [question, setQuestion] = useState("");
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState([
+    {
+      isBot: true,
+      msg: "Bonjour, je suis Paperass AI, je suis là pour t'assister dans toutes tes démarches administratives. \
+    Comment puis-je t'aider ?",
+    },
+  ]);
   const [thread, setThread] = useState(null);
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
   chatRef.current = chat;
+
+  const postMessage = async (message) => {
+    const supabase = await createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_KEY,
+      {
+        global: {
+          headers: { Authorization: `Bearer ${session?.access_token}` },
+        },
+      }
+    );
+    console.log("session =", session);
+    let supabase_rep;
+    if (session?.user_id) {
+      supabase_rep = await supabase.from("message").upsert({
+        message: message,
+        user_id: session.user_id,
+        session_id: session.id,
+      });
+    } else {
+      console.log("user_id doesn't exist in session");
+      supabase_rep = null;
+    }
+    console.log("supabase_rep = ", supabase_rep);
+  };
 
   const getAnswer = async (threadId, runId) => {
     const getRun = await openai.beta.threads.runs.retrieve(threadId, runId);
@@ -56,6 +87,9 @@ function ChatComponent({ assistantId, Okey }) {
       setOpenai(new OpenAI({ apiKey: Okey, dangerouslyAllowBrowser: true }));
     }
   }, [Okey]);
+  useEffect(() => {
+    postMessage(chat);
+  }, [chat]);
 
   const sendFirstName = async () => {
     const supabase = await createClient(
@@ -74,6 +108,7 @@ function ChatComponent({ assistantId, Okey }) {
 
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
+      <button onClick={sendFirstName}>Send Clément</button>
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
