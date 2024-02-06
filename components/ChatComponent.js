@@ -10,7 +10,16 @@ import Signup from "@/app/signup/page";
 function ChatComponent({ assistantId, Okey }) {
   const { data: session, status } = useSession();
   const [question, setQuestion] = useState("");
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState([
+    {
+      isBot: true,
+      msg: "Hey là ! 👋 Prêt pour une petite aventure administrative sans tracas ? \
+      Ici, nous transformons le dédale des aides sociales en un parcours clair et accessible. \
+      Notre mission ? Vous assurer de profiter pleinement de chaque aide disponible, adaptée à votre situation unique. \
+      Laissons de côté la complexité et avançons ensemble vers la simplicité. Avant de plonger dans le vif du sujet, \
+      quel aspect des démarches administratives vous semble le plus nébuleux ou vous préoccupe le plus en ce moment ?",
+    },
+  ]);
   const [thread, setThread] = useState(null);
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -96,15 +105,15 @@ function ChatComponent({ assistantId, Okey }) {
     }
   }, [Okey]);
 
-  useEffect(() => {
-    if (openai && Okey) {
-      askAssistant(
-        "Bonjour présente toi, rappelle bien que tu es là pour expliquer l'ensemble des prestations sociales auxquelles j'ai droit \
-        et dis moi en quoi tu peux m'aider à connaitre toutes les prestations sociales auxquelles j'ai droit.",
-        true
-      );
-    }
-  }, [openai, Okey]);
+  // useEffect(() => {
+  //   if (openai && Okey) {
+  //     askAssistant(
+  //       "Bonjour présente toi, rappelle bien que tu es là pour expliquer l'ensemble des prestations sociales auxquelles j'ai droit \
+  //       et dis moi en quoi tu peux m'aider à connaitre toutes les prestations sociales auxquelles j'ai droit.",
+  //       true
+  //     );
+  //   }
+  // }, [openai, Okey]);
 
   useEffect(() => {
     postMessage(chat);
@@ -112,7 +121,6 @@ function ChatComponent({ assistantId, Okey }) {
 
   return (
     <div className="flex-1 w-screen md:p-4 flex flex-col gap-4">
-      {question}
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
