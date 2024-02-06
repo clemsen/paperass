@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "@/app/globals.css";
 import MainComponent from "@/components/MainComponent";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default async function RootLayout({ children }) {
       <body className={`${montserrat.className}`}>
         <MainComponent>{children}</MainComponent>
       </body>
+      <GoogleAnalytics gaId="G-FSCDE7ECFQ" />
     </html>
   );
 }
