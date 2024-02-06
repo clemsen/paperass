@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
 import { useSession } from "next-auth/react";
+import Modal from "@mui/material/Modal";
+import Signup from "@/app/signup/page";
 
 function ChatComponent({ assistantId, Okey }) {
   const { data: session, status } = useSession();
@@ -12,6 +14,7 @@ function ChatComponent({ assistantId, Okey }) {
   const [thread, setThread] = useState(null);
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState(false);
   const chatRef = useRef(null);
   chatRef.current = chat;
 
@@ -108,7 +111,7 @@ function ChatComponent({ assistantId, Okey }) {
   }, [chat]);
 
   return (
-    <div className="flex-1 w-screen md:p-4 flex flex-col bg-myBg gap-4">
+    <div className="flex-1 w-screen md:p-4 flex flex-col gap-4">
       {question}
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
@@ -146,13 +149,20 @@ function ChatComponent({ assistantId, Okey }) {
             e.code == "Enter" && !e.shiftKey && askAssistant();
           }}
           onChange={(e) => setQuestion(e.target.value)}
+          onClick={status !== "authenticated" ? () => setModal(true) : () => {}}
         />
         <button
-          onClick={askAssistant}
+          onClick={status == askAssistant}
           className="bg-mySecondary hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2.5 text-center "
         >
           <Image height={20} width={20} src="/send.svg" alt="send" />
         </button>
+
+        <Modal open={modal}>
+          <div className="absolute bg-white pb-10 w-1/2 top-1/4 left-1/4 rounded-lg bg-myBg">
+            <Signup />
+          </div>
+        </Modal>
       </div>
     </div>
   );

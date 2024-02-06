@@ -15,7 +15,7 @@ function MainComponent({ children }) {
   return (
     <KeyContext.Provider value={{ key, setKey }}>
       <SessionProvider>
-        <main className="flex flex-col h-screen">
+        <main className="flex flex-col h-screen bg-myBg">
           <HeaderComponent />
           {children}
         </main>

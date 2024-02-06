@@ -2,6 +2,7 @@
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Signup = () => {
     await supabase.auth.signUp({ email, password });
   };
   return (
-    <div id="signup" className="flex flex-col w-screen items-center">
+    <div id="signup" className="flex flex-col items-center">
       <div className="bloc-signup flex flex-col w-1/2 items-center">
         <div className="title mt-10 text-xl">Inscrivez vous</div>
         <div className="form mt-10 w-full">
@@ -43,6 +44,9 @@ const Signup = () => {
           >
             Inscrivez vous
           </button>
+          <div className="w-full pt-3 flex justify-center">
+            <Link href="/api/auth/signin">Ou connectez vous</Link>
+          </div>
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ const Signin = () => {
     }
   };
   return (
-    <div id="signup" className="flex flex-col w-screen items-center">
+    <div id="signup" className="flex flex-col items-center bg-myBg">
       <div className="bloc-signup flex flex-col w-1/2 items-center">
         <div className="title mt-10 text-xl">Connectez vous</div>
         <div className="form mt-10 w-full">
