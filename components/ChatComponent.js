@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
 import { useSession } from "next-auth/react";
+import { v4 } from "uuid";
 import Modal from "@mui/material/Modal";
 import Signup from "@/app/signup/page";
 
@@ -24,21 +25,23 @@ function ChatComponent({ assistantId, Okey }) {
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
+  const [messageId] = useState(v4());
   const chatRef = useRef(null);
   chatRef.current = chat;
 
   const postMessage = async (message) => {
-    const supabase = await createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_KEY,
-      {
-        global: {
-          headers: { Authorization: `Bearer ${session?.access_token}` },
-        },
-      }
-    );
+    let supabase;
     let supabase_rep;
     if (session?.user_id) {
+      supabase = await createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_KEY,
+        {
+          global: {
+            headers: { Authorization: `Bearer ${session?.access_token}` },
+          },
+        }
+      );
       supabase_rep = await supabase.from("message").upsert({
         session_id: session.access_token.substr(
           session.access_token.length - 10
@@ -48,7 +51,15 @@ function ChatComponent({ assistantId, Okey }) {
       });
     } else {
       console.log("user_id doesn't exist in session");
-      supabase_rep = null;
+      supabase = supabase_rep = await createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_KEY
+      );
+      if (process.env.NODE_ENV === "production")
+        supabase_rep = await supabase.from("message_no_logged").upsert({
+          message_id: messageId,
+          message: message,
+        });
     }
   };
 
