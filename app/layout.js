@@ -16,7 +16,7 @@ export default async function RootLayout({ children }) {
       <body className={`${montserrat.className}`}>
         <MainComponent>{children}</MainComponent>
       </body>
-      <GoogleAnalytics gaId="G-FSCDE7ECFQ" />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA} />
     </html>
   );
 }

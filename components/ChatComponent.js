@@ -120,7 +120,7 @@ function ChatComponent({ assistantId, Okey }) {
   }, [chat]);
 
   return (
-    <div className="flex-1 w-screen md:p-4 flex flex-col gap-4">
+    <div className="flex-1 w-screen p-4 flex flex-col gap-4 bg-myBg">
       <div className="flex-1 flex flex-col gap-2 w-full h-full overflow-y-auto scroll">
         {chat.map((msg, index) => (
           <div
@@ -129,7 +129,7 @@ function ChatComponent({ assistantId, Okey }) {
               msg.isBot
                 ? "bg-gray-900 text-gray-100 self-start"
                 : "text-gray-900 bg-gray-100 self-end border-2"
-            } rounded-lg  px-3 py-2 max-w-2xl`}
+            } rounded-lg  px-3 py-2 max-w-2xl text-sm sm:text-base`}
           >
             {msg.msg}
           </div>
@@ -160,17 +160,17 @@ function ChatComponent({ assistantId, Okey }) {
           onClick={status !== "authenticated" ? () => setModal(true) : () => {}}
         />
         <button
-          onClick={status == askAssistant}
-          className="bg-mySecondary hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2.5 text-center "
+          onClick={() => askAssistant()}
+          className="bg-mySecondary hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-4 py-2.5 text-center "
         >
           <Image height={20} width={20} src="/send.svg" alt="send" />
         </button>
 
-        <Modal open={modal}>
+        {/* <Modal open={modal}>
           <div className="absolute bg-white pb-10 w-1/2 top-1/4 left-1/4 rounded-lg bg-myBg">
             <Signup />
           </div>
-        </Modal>
+        </Modal> */}
       </div>
     </div>
   );
