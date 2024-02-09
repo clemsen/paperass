@@ -24,6 +24,7 @@ function ChatComponent({ assistantId, Okey }) {
   const [openai, setOpenai] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
+  const [nbMessages, setNbMessages] = useState(0);
   const [messageId] = useState(v4());
   const chatRef = useRef(null);
   chatRef.current = chat;
@@ -84,6 +85,7 @@ function ChatComponent({ assistantId, Okey }) {
     let getQuestion = questionInput || question;
     setQuestion("");
     if (!isAutomatic) {
+      setNbMessages(nbMessages + 1);
       let chatList = [...chatRef.current, { isBot: false, msg: getQuestion }];
       setChat(chatList);
     }
@@ -126,7 +128,7 @@ function ChatComponent({ assistantId, Okey }) {
   // }, [openai, Okey]);
 
   useEffect(() => {
-    postMessage(chat);
+    if (nbMessages > 0) postMessage(chat.slice(1));
   }, [chat]);
 
   return (
