@@ -14,10 +14,7 @@ function ChatComponent({ assistantId, Okey }) {
   const [chat, setChat] = useState([
     {
       isBot: true,
-      msg: "Hey là ! 👋 Prêt pour une petite aventure administrative sans tracas ? \
-      Ici, nous transformons le dédale des aides sociales en un parcours clair et accessible. \
-      Notre mission ? Vous assurer de profiter pleinement de chaque aide disponible, adaptée à votre situation unique. \
-      Quelles questions avez vous sur les prestations sociales ?",
+      msg: "Bonjour, je suis là pour répondre à toutes vos questions administratives ou de comptabilité.",
     },
   ]);
   const [thread, setThread] = useState(null);
