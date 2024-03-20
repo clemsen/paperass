@@ -138,7 +138,7 @@ function ChatComponent({ assistantId, Okey }) {
               msg.isBot
                 ? "bg-gray-900 text-gray-100 self-start"
                 : "text-gray-900 bg-gray-100 self-end border-2"
-            } rounded-lg  px-3 py-2 max-w-2xl text-sm sm:text-base`}
+            } rounded-lg  px-3 py-2 max-w-2xl text-sm sm:text-base whitespace-pre-wrap`}
           >
             {msg.msg}
           </div>
